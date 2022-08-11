@@ -1,7 +1,11 @@
 import { DataTypes, Model, Sequelize } from "sequelize";
+import dotenv from "dotenv";
 
-const sqlDBEngine = new Sequelize("todo_test", "root", "", {
-    host: "127.0.0.1",
+dotenv.config();
+
+const sqlDBEngine = new Sequelize(process.env["MYSQL_DBNAME"], process.env["MYSQL_USER"], process.env["MYSQL_PASSWORD"], {
+    host: process.env["MYSQL_HOST"],
+    port: process.env["MYSQL_PORT"],
     dialect: "mysql",
     logging: console.log,
     define: {

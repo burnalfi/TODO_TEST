@@ -12,8 +12,9 @@ activityRouter.get("", async (req, res) => {
 
         res.status(200).send(new ResponseFormat("Success", "Success", activity));
     } catch (e) {
-        console.log(e.message)
-        res.status(500).send(new ResponseFormat("Failed", e.message, ""))
+        console.log(e.message);
+        console.log(e);
+        res.status(500).send(new ResponseFormat("Failed", e.message, ""));
     }
 });
 
