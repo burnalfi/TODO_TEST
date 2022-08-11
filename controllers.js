@@ -10,11 +10,11 @@ activityRouter.get("", async (req, res) => {
         const email = decodeURI(req.query.email);
         const activity = await ActivityGroup.findAll({where: {email: email, deleted_at: null}});
 
-        res.status(200).send(new ResponseFormat("Success", "Success", activity));
+        return res.status(200).send(new ResponseFormat("Success", "Success", activity));
     } catch (e) {
         console.log(e.message);
         console.log(e);
-        res.status(500).send(new ResponseFormat("Failed", e.message, ""));
+        return res.status(500).send(new ResponseFormat("Failed", e.message, ""));
     }
 });
 
@@ -30,10 +30,10 @@ activityRouter.post("", async (req, res) => {
             updated_at: new Date()
         });
 
-        res.status(201).send(new ResponseFormat("Success", "Success", activity));
+        return res.status(201).send(new ResponseFormat("Success", "Success", activity));
     } catch (e) {
         console.log(e.message);
-        res.status(500).send(new ResponseFormat("Failed", e.message, ""));
+        return res.status(500).send(new ResponseFormat("Failed", e.message, ""));
     }
 });
 
@@ -43,13 +43,13 @@ activityRouter.get("/:id", async (req, res) => {
 
         const activity = await ActivityGroup.findOne({where: {id: id, deleted_at: null}});
         if (activity == null) {
-            res.status(404).send(new ResponseFormat("Success", `Activity with ID ${id} Not Found`, {}));
+            return res.status(404).send(new ResponseFormat("Success", `Activity with ID ${id} Not Found`, {}));
         }
 
-        res.status(200).send(new ResponseFormat("Success", "Success", activity));
+        return res.status(200).send(new ResponseFormat("Success", "Success", activity));
     } catch (e) {
         console.log(e.message);
-        res.status(500).send(new ResponseFormat("Failed", e.message, ""))
+        return res.status(500).send(new ResponseFormat("Failed", e.message, ""))
     }
 });
 
@@ -63,9 +63,9 @@ activityRouter.delete("/:id", async (req, res) => {
 
     ActivityGroup.update({deleted_at: new Date()}, {where: {id: id, deleted_at: null}})
     .then(async () => {
-        res.status(404).send(new ResponseFormat("Not Found", `Activity with ID ${id} Not Found`, {}))
+        return res.status(404).send(new ResponseFormat("Not Found", `Activity with ID ${id} Not Found`, {}))
     })
-    .catch((e) => {res.status(500).send(new ResponseFormat("Failed", e.message, {}));});
+    .catch((e) => {return res.status(500).send(new ResponseFormat("Failed", e.message, {}));});
 });
 
 activityRouter.patch("/:id", async (req, res) => {
@@ -76,11 +76,11 @@ activityRouter.patch("/:id", async (req, res) => {
     .then(async () => {
         const activity = await ActivityGroup.findOne({where: {id: id, deleted_at: null}});
         if (activity == null) {
-            res.status(404).send(new ResponseFormat("Failed", `Activity with ID ${id} Not Found`, ""));
+            return res.status(404).send(new ResponseFormat("Failed", `Activity with ID ${id} Not Found`, ""));
     }
-        res.status(200).send(new ResponseFormat("Success", "Success", activity));
+        return res.status(200).send(new ResponseFormat("Success", "Success", activity));
     })
-    .catch(async (e) => {res.status(500).send(new ResponseFormat("Failed", e.message, ""));});
+    .catch(async (e) => {return res.status(500).send(new ResponseFormat("Failed", e.message, ""));});
 });
 
 
@@ -96,10 +96,10 @@ todoRouter.post("", async (req, res) => {
             updated_at: new Date()
         });
 
-        res.status(201).send(new ResponseFormat("Success", "Success", todo));
+        return res.status(201).send(new ResponseFormat("Success", "Success", todo));
     } catch (e) {
         console.log(e);
-        res.status(500).send(new ResponseFormat("Failed", e.message, ""))
+        return res.status(500).send(new ResponseFormat("Failed", e.message, ""))
     }
 });
 
@@ -109,12 +109,12 @@ todoRouter.get("", async (req, res) => {
 
         const todo = await TodoItems.findAll({where: {activity_group_id: activity_group_id, deleted_at: null}});
         if (todo == null) {
-            res.status(404).send(new ResponseFormat("Failed", `Todo Item with Activity Group ID ${activity_group_id} is Not Found`));
+            return res.status(404).send(new ResponseFormat("Failed", `Todo Item with Activity Group ID ${activity_group_id} is Not Found`));
         }
-        res.status(200).send(new ResponseFormat("Success", "Success", todo));
+        return res.status(200).send(new ResponseFormat("Success", "Success", todo));
     } catch (e) {
         console.log(e);
-        res.status(500).send(new ResponseFormat("Failed", e.message, ""))
+        return res.status(500).send(new ResponseFormat("Failed", e.message, ""))
     }
 });
 
@@ -124,12 +124,12 @@ todoRouter.get("/:id", async (req, res) => {
 
         const todo = await TodoItems.findOne({where: {id: id, deleted_at: null}});
         if (todo == null) {
-            res.status(404).send(new ResponseFormat("Failed", `Todo Item with ID ${id} is Not Found`, ""));
+            return res.status(404).send(new ResponseFormat("Failed", `Todo Item with ID ${id} is Not Found`, ""));
         }
-        res.status(200).send(new ResponseFormat("Success", "Success", todo));
+        return res.status(200).send(new ResponseFormat("Success", "Success", todo));
     } catch (e) {
         console.log(e.message);
-        res.status(500).send(new ResponseFormat("Failed", e.message, ""));
+        return res.status(500).send(new ResponseFormat("Failed", e.message, ""));
     }
 });
 
@@ -141,11 +141,11 @@ todoRouter.patch("/:id", async (req, res) => {
     .then(async () => {
         const todo = await TodoItems.findOne({where: {id: id, deleted_at: null}});
         if (todo == null) {
-            res.status(404).send(new ResponseFormat("Failed", `Todo Item with ID ${id} Not Found`, ""));
+            return res.status(404).send(new ResponseFormat("Failed", `Todo Item with ID ${id} Not Found`, ""));
     }
-        res.status(200).send(new ResponseFormat("Success", "Success", todo));
+        return res.status(200).send(new ResponseFormat("Success", "Success", todo));
     })
-    .catch(async (e) => {res.status(500).send(new ResponseFormat("Failed", e.message, ""));});
+    .catch(async (e) => {return res.status(500).send(new ResponseFormat("Failed", e.message, ""));});
 });
 
 todoRouter.delete("/:id", async (req, res) => {
@@ -158,7 +158,7 @@ todoRouter.delete("/:id", async (req, res) => {
 
     TodoItems.update({deleted_at: new Date()}, {where: {id: id, deleted_at: null}})
     .then(async () => {
-        res.status(404).send(new ResponseFormat("Success", `Success`,  {}))
+        return res.status(404).send(new ResponseFormat("Success", `Success`,  {}))
     })
-    .catch((e) => {res.status(500).send(new ResponseFormat("Failed", e.message, {}));});
+    .catch((e) => {return res.status(500).send(new ResponseFormat("Failed", e.message, {}));});
 });
