@@ -3,9 +3,9 @@ import dotenv from "dotenv";
 
 dotenv.config();
 
-const sqlDBEngine = new Sequelize(process.env["MYSQL_DBNAME"], process.env["MYSQL_USER"], process.env["MYSQL_PASSWORD"], {
-    host: process.env["MYSQL_HOST"],
-    port: process.env["MYSQL_PORT"],
+const sqlDBEngine = new Sequelize(String(process.env["MYSQL_DBNAME"]), String(process.env["MYSQL_USER"]), String(process.env["MYSQL_PASSWORD"]), {
+    host: String(process.env["MYSQL_HOST"]),
+    port: parseInt(process.env["MYSQL_PORT"]),
     dialect: "mysql",
     logging: console.log,
     define: {
@@ -33,11 +33,11 @@ ActivityGroup.init({
     },
     title: {
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: true
     },
     email: {
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: true
     },
     created_at: {
         type: DataTypes.DATE,
@@ -56,7 +56,7 @@ ActivityGroup.init({
 }, 
 {
     sequelize: sqlDBEngine,
-    modelName: "activity_group"
+    modelName: "Activity"
 });
 
 TodoItems.init({
@@ -68,7 +68,7 @@ TodoItems.init({
     },
     title: {
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: true
     },
     priority: {
         type: DataTypes.ENUM("very-low", "low", "medium", "high", "very-high"),
@@ -82,7 +82,7 @@ TodoItems.init({
     },
     activity_group_id: {
         type: DataTypes.INTEGER,
-        allowNull: false,
+        allowNull: true,
     },
     created_at: {
         type: DataTypes.DATE,
@@ -101,11 +101,12 @@ TodoItems.init({
 },
 {
    sequelize: sqlDBEngine,
-   modelName: "todo_items"
+   modelName: "Todo"
 });
 
 export {
     ActivityGroup,
     TodoItems,
-    ResponseFormat
+    ResponseFormat,
+    sqlDBEngine
 };
