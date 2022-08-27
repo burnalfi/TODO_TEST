@@ -56,7 +56,7 @@ ActivityGroup.init({
 }, 
 {
     sequelize: sqlDBEngine,
-    modelName: "Activity"
+    modelName: "activities"
 });
 
 TodoItems.init({
@@ -101,7 +101,7 @@ TodoItems.init({
 },
 {
    sequelize: sqlDBEngine,
-   modelName: "Todo"
+   modelName: "todos"
 });
 
 export {
